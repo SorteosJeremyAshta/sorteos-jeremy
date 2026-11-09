@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#001407">
+  <title>Sorteos Jeremy Ashta</title>
+  <link rel="stylesheet" href="./styles.css">
+
+  <!-- Distribución de las tarjetas de portada -->
+  <style>
+    .estadisticas {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 180px));
+      gap: 12px;
+      justify-content: center;
+      width: 100%;
+      max-width: 380px;
+      margin: 28px auto;
+    }
+
+    .estadistica {
+      min-height: 95px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 5px;
+    }
+
+    .estadistica-promocion {
+      border: 1px solid #ffc400;
+      background: rgba(255, 193, 7, 0.12);
+    }
+
+    .estadistica-promocion strong,
+    .estadistica-promocion small {
+      color: #ffc400;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PANTALLA 1: BIENVENIDA -->
+  <section class="portada" id="portada">
+
+    <header class="portada-header">
+      <div class="marca">
+        <img src="./assets/logo.png" alt="Sorteos Jeremy Ashta">
+        <span>SORTEOS JEREMY ASHTA</span>
+      </div>
+
+      <span class="estado">
+        <i></i> SORTEOS ACTIVOS
+      </span>
+    </header>
+
+    <main class="bienvenida">
+
+      <div class="etiqueta">🌿 BIENVENIDO A NUESTRA COMUNIDAD</div>
+
+      <img
+        class="logo-principal"
+        src="./assets/logo.png"
+        alt="Logo de Sorteos Jeremy Ashta"
+      >
+
+      <h1>LA SUERTE ESTÁ<br><span>DE TU LADO</span></h1>
+
+      <p class="descripcion-portada">
+        Participa en nuestros sorteos y gana increíbles premios en efectivo.
+        Elige tus numeritos y conviértete en uno de nuestros próximos ganadores.
+      </p>
+
+      <!-- ESTADÍSTICAS: 2 ARRIBA Y 2 ABAJO -->
+      <div class="estadisticas">
+
+        <div class="estadistica">
+          <span>🏆</span>
+          <strong>4 PREMIOS</strong>
+          <small>Grandes ganadores</small>
+        </div>
+
+        <div class="estadistica">
+          <span>💰</span>
+          <strong>S/ 800</strong>
+          <small>En efectivo</small>
+        </div>
+
+        <div class="estadistica">
+          <span>🎟️</span>
+          <strong>S/ 5.00</strong>
+          <small>Por número</small>
+        </div>
+
+        <div class="estadistica estadistica-promocion">
+          <span>🔥</span>
+          <strong>PROMOCIÓN</strong>
+          <small>3 x S/ 10</small>
+        </div>
+
+      </div>
+
+      <button class="boton-dorado boton-entrada" onclick="irAlSorteo()">
+        ENTRAR AL SORTEO <span>➜</span>
+      </button>
+
+      <p class="frase-final">✨ ¡Tu próximo premio podría estar aquí!</p>
+
+    </main>
+
+    <footer class="footer-portada">
+      <span>© 2026 SORTEOS JEREMY ASHTA</span>
+      <span>LA EMOCIÓN DE GANAR COMIENZA AQUÍ</span>
+    </footer>
+
+  </section>
+
+
+  <!-- PANTALLA 2: SORTEO -->
+  <section class="contenido" id="sorteo">
+
+    <header class="barra-superior">
+
+      <button class="menu-btn" onclick="toggleMenu()" aria-label="Abrir menú">
+        ☰
+      </button>
+
+      <img class="logo-header" src="./assets/logo.png" alt="Logo">
+
+      <a class="whatsapp-header" id="whatsappContacto"
+         href="#" target="_blank" aria-label="WhatsApp">
+        ☎
+      </a>
+
+      <nav class="menu" id="menu">
+        <a href="#premios" onclick="cerrarMenu()">Premios</a>
+        <a href="#numeros" onclick="cerrarMenu()">Numeritos</a>
+        <a href="#participar" onclick="cerrarMenu()">Participar</a>
+        <a href="#ganadores" onclick="cerrarMenu()">Ganadores</a>
+      </nav>
+
+    </header>
+
+    <main class="contenido-interior">
+
+      <div class="titulo-principal">
+        <div class="titulo-plata">
+          <span>💵</span>
+          <h1>SORTEO DE PLATA</h1>
+          <span>💵</span>
+        </div>
+
+        <div class="subtitulo-dorado">4 GRANDES PREMIOS</div>
+      </div>
+
+
+      <!-- PREMIOS -->
+      <section id="premios" class="seccion-premios">
+
+        <div class="rejilla-premios">
+
+          <article class="tarjeta-premio">
+            <span class="cinta">1er Puesto</span>
+            <strong>S/.400</strong>
+          </article>
+
+          <article class="tarjeta-premio">
+            <span class="cinta">2do Puesto</span>
+            <strong>S/.200</strong>
+          </article>
+
+          <article class="tarjeta-premio">
+            <span class="cinta">3er Puesto</span>
+            <strong>S/.150</strong>
+          </article>
+
+          <article class="tarjeta-premio">
+            <span class="cinta">4to Puesto</span>
+            <strong>S/.50</strong>
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- ACCESOS -->
+      <div class="accesos">
+
+        <a href="#numeros" class="acceso">
+          <span>🎟️</span>
+          <small>Elegir<br>Numeritos</small>
+        </a>
+
+        <a href="#participar" class="acceso">
+          <span>❔</span>
+          <small>Cómo<br>Participar</small>
+        </a>
+
+        <a href="#premios" class="acceso">
+          <span>🎁</span>
+          <small>Premios<br>del Sorteo</small>
+        </a>
+
+        <a href="#ganadores" class="acceso">
+          <span>🏆</span>
+          <small>Ganadores</small>
+        </a>
+
+      </div>
+
+
+      <!-- NÚMEROS -->
+      <section id="numeros" class="seccion-numeros">
+
+        <div class="titulo-numeros">
+          <span>🎟️</span>
+          <h2>ELIGE TUS NUMERITOS</h2>
+          <span>🌿</span>
+        </div>
+
+        <div class="leyenda">
+          <span><i class="disponible"></i> Disponible</span>
+          <span><i class="reservado"></i> Reservado</span>
+          <span><i class="vendido"></i> Vendido</span>
+        </div>
+
+        <div class="cuadricula" id="cuadricula"></div>
+
+        <div class="resumen">
+          <div>
+            <small>Números seleccionados</small>
+            <strong id="numerosSeleccionados">Ninguno</strong>
+          </div>
+
+          <div class="total">
+            <small>Total a pagar</small>
+            <strong id="total">S/. 0.00</strong>
+          </div>
+        </div>
+
+        <button class="boton-dorado boton-comprar" onclick="abrirFormulario()">
+          🛒 COMPRAR MIS NUMERITOS
+        </button>
+
+      </section>
+
+
+      <!-- FECHA Y PRECIO -->
+      <div class="datos-sorteo">
+
+        <div class="dato">
+          <span>📅</span>
+          <div>
+            <small>Fecha del sorteo:</small>
+            <strong id="fechaSorteo">Por definir</strong>
+          </div>
+        </div>
+
+        <div class="separador"></div>
+
+        <div class="dato">
+          <span>🎟️</span>
+          <div>
+            <small>Precio por número:</small>
+            <strong>S/. 5.00</strong>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- FORMULARIO -->
+      <section id="participar" class="formulario-seccion">
+
+        <h2>📲 CONFIRMA TU PARTICIPACIÓN</h2>
+        <p>Completa tus datos y adjunta tu comprobante de Yape.</p>
+
+        <div class="formulario-grid">
+
+          <div class="campos">
+
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" type="text" placeholder="Nombres y apellidos">
+
+            <label for="celular">Número de celular</label>
+            <input id="celular" type="tel" maxlength="9"
+                   placeholder="Tu celular de 9 dígitos">
+
+            <label for="comprobante">Comprobante de pago</label>
+            <input id="comprobante" type="file" accept="image/*">
+
+            <button class="boton-dorado boton-enviar" onclick="enviarWhatsApp()">
+              ENVIAR MI PARTICIPACIÓN
+            </button>
+
+          </div>
+
+          <div class="qr-contenedor">
+            <h3>ESCANEA Y YAPEA</h3>
+            <img src="./assets/yape-qr.png" alt="Código QR de Yape">
+            <p>Realiza el pago y adjunta tu comprobante.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- GANADORES -->
+      <section id="ganadores" class="ganadores">
+        <h2>🏆 GANADORES</h2>
+        <p>Muy pronto conoceremos a nuestros afortunados ganadores.</p>
+        <strong>¡MUCHA SUERTE A TODOS! 🍀</strong>
+      </section>
+
+    </main>
+
+    <footer class="footer-contenido">
+      © 2026 SORTEOS JEREMY ASHTA · PARTICIPA Y GANA
+    </footer>
+
+  </section>
+
+  <script src="./app.js"></script>
+
+</body>
+</html>
+```
