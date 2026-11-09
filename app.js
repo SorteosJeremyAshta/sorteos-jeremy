@@ -18,18 +18,21 @@ function irAlSorteo() {
   const sorteo = document.getElementById("sorteo");
 
   if (!portada || !sorteo) {
-    console.error("No se encontraron las secciones del sorteo.");
-    alert("No se pudo abrir el sorteo. Recarga la página.");
+    alert("No se encontraron las pantallas del sorteo.");
+    console.error("Revisa los IDs portada y sorteo en index.html.");
     return;
   }
 
-  portada.classList.add("ocultar");
-  sorteo.classList.add("mostrar");
+  // Ocultar portada y mostrar sorteo
+  portada.style.setProperty("display", "none", "important");
+  sorteo.style.setProperty("display", "block", "important");
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  // Actualizar números y resumen
+  generarNumeros();
+  actualizarResumen();
+
+  // Ir al inicio de la página
+  window.scrollTo(0, 0);
 }
 
 
