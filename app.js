@@ -3,7 +3,7 @@
 // =====================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAe2FasSss4WLPB5s_lk4dz6IWykzFAnMyo",
+  apiKey: "AIzaSyAefA2sSss4WLPB5s_Lk4dz6IWykzFAnMyo",
   authDomain: "sorteos-jeremy-ashta.firebaseapp.com",
   projectId: "sorteos-jeremy-ashta",
   storageBucket: "sorteos-jeremy-ashta.firebasestorage.app",
@@ -11,13 +11,17 @@ const firebaseConfig = {
   appId: "1:1063051655246:web:a0999b935ee5aaba306b1f"
 };
 
-firebase.initializeApp(firebaseConfig);
+// Inicializar Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 let usuarioAutenticado = false;
 
+// Verificar autenticación
 auth.onAuthStateChanged(async function(usuario) {
   if (usuario) {
     usuarioAutenticado = true;
@@ -26,8 +30,9 @@ auth.onAuthStateChanged(async function(usuario) {
     try {
       await auth.signInAnonymously();
     } catch (error) {
+      usuarioAutenticado = false;
       console.error("Error de autenticación:", error);
-      alert("No se pudo conectar con Firebase.");
+      alert("No se pudo conectar con Firebase: " + error.message);
     }
   }
 });
