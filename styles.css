@@ -1,1064 +1,754 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
 
 :root {
-  --verde: #00c83d;
-  --verde-oscuro: #003b17;
-  --dorado: #ffc629;
-  --dorado-claro: #fff0a0;
-  --rojo: #ed1717;
-  --negro: #001207;
+    --verde: #063819;
+    --verde-oscuro: #020b05;
+    --dorado: #ffca35;
+    --oro-claro: #fff0a0;
+    --blanco: #fff;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: #001006;
-  color: white;
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: white;
+    background: #020b05;
 }
 
-/* =====================================
-   PANTALLA 1: BIENVENIDA
-===================================== */
+.pagina {
+    display: grid;
+    grid-template-columns: 46% 54%;
+    max-width: 1800px;
+    min-height: 100vh;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* PANEL IZQUIERDO */
 
 .portada {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: 20px 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-
-  background:
-    linear-gradient(rgba(0,12,5,.62), rgba(0,15,6,.78)),
-    url("./assets/selva-portada.png") center center / cover no-repeat;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 35px 5%;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(0,12,3,.15), rgba(0,10,3,.55)),
+        url("assets/selva.jpg") center / cover,
+        radial-gradient(circle, #17542b, #020b05);
+    border-right: 5px solid #f5d15d;
 }
 
 .portada::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 10%,
-    rgba(0,0,0,.45) 100%
-  );
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,199,42,.09),
+        transparent
+    );
+    pointer-events: none;
 }
 
-.portada-header,
-.bienvenida,
-.footer-portada {
-  position: relative;
-  z-index: 1;
+.logo-contenedor {
+    position: relative;
+    width: 100%;
+    max-width: 570px;
+    z-index: 2;
+    animation: entradaLogo 1.5s ease;
 }
 
-.portada-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.logo-contenedor img {
+    width: 100%;
+    display: block;
+    filter:
+        drop-shadow(0 0 15px #e5aa20)
+        drop-shadow(0 0 35px rgba(255,193,32,.5));
+    animation: flotar 4s ease-in-out infinite;
+}
+
+.aro {
+    position: absolute;
+    width: 76%;
+    aspect-ratio: 1;
+    border: 3px solid rgba(255,202,52,.85);
+    border-radius: 50%;
+    box-shadow:
+        0 0 12px gold,
+        inset 0 0 15px #e5a900,
+        0 0 35px #d89b00;
+    animation: girar 12s linear infinite;
+    pointer-events: none;
+}
+
+.aro-2 {
+    width: 82%;
+    border-style: dashed;
+    opacity: .55;
+    animation-direction: reverse;
+}
+
+.mensaje {
+    position: relative;
+    z-index: 2;
+    margin-top: 25px;
+    text-shadow: 0 2px 10px black;
+}
+
+.mensaje h2 {
+    font-size: clamp(15px, 2.1vw, 28px);
+    font-weight: 900;
+}
+
+.mensaje h1 {
+    font-size: clamp(27px, 4vw, 52px);
+    font-weight: 900;
+    color: var(--dorado);
+    text-shadow: 0 0 15px #c58b00;
+    margin: 5px;
+}
+
+.btn-entrar {
+    position: relative;
+    z-index: 3;
+    width: 90%;
+    margin-top: 32px;
+    padding: 20px 10px;
+    font-size: clamp(16px, 2vw, 24px);
+    font-weight: 900;
+    border-radius: 50px;
+    border: 3px solid #fff0a2;
+    color: #171000;
+    background: linear-gradient(
+        180deg,
+        #fff0a0,
+        #ffca28 45%,
+        #bd7100
+    );
+    box-shadow:
+        0 0 15px gold,
+        0 0 35px rgba(255,193,7,.5);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-entrar:hover,
+.btn-comprar:hover {
+    transform: scale(1.04);
+    filter: brightness(1.15);
+}
+
+.btn-entrar span {
+    margin-left: 12px;
+}
+
+.decoracion-inferior {
+    font-size: 35px;
+    margin-top: 25px;
 }
 
 .marca {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--dorado-claro);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1px;
+    position: absolute;
+    bottom: 12px;
+    font-size: 11px;
+    opacity: .7;
 }
 
-.marca img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-}
-
-.estado {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border: 1px solid rgba(0,255,80,.55);
-  border-radius: 30px;
-  background: rgba(0,70,25,.55);
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.estado i {
-  width: 9px;
-  height: 9px;
-  background: #00ff5e;
-  border-radius: 50%;
-  box-shadow: 0 0 12px #00ff5e;
-  animation: pulso 1.5s infinite;
-}
-
-.bienvenida {
-  width: min(850px, 100%);
-  margin: auto;
-  padding: 25px 0;
-  text-align: center;
-  animation: aparecer .9s ease both;
-}
-
-.etiqueta {
-  display: inline-block;
-  padding: 10px 17px;
-  border: 1px solid rgba(255,202,49,.55);
-  border-radius: 30px;
-  background: rgba(0,0,0,.4);
-  color: var(--dorado-claro);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.logo-principal {
-  display: block;
-  width: min(280px, 65%);
-  height: 220px;
-  object-fit: contain;
-  margin: 10px auto;
-  filter: drop-shadow(0 0 20px rgba(255,190,20,.45));
-}
-
-.bienvenida h1 {
-  color: white;
-  font-size: clamp(36px, 5vw, 66px);
-  font-weight: 900;
-  line-height: 1.08;
-  text-shadow: 0 5px 18px #000;
-  margin: 10px 0 15px;
-}
-
-.bienvenida h1 span {
-  color: var(--dorado);
-  text-shadow: 0 0 20px rgba(255,183,0,.4);
-}
-
-.descripcion-portada {
-  max-width: 600px;
-  margin: 0 auto;
-  color: #e0e9df;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.estadisticas {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 13px;
-  width: min(650px, 100%);
-  margin: 28px auto;
-}
-
-.estadistica {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 17px 8px;
-  border: 1px solid rgba(255,197,38,.45);
-  border-radius: 14px;
-  background: rgba(0,25,10,.75);
-  backdrop-filter: blur(7px);
-  box-shadow: inset 0 0 18px rgba(255,190,0,.06);
-}
-
-.estadistica span {
-  font-size: 27px;
-}
-
-.estadistica strong {
-  color: var(--dorado-claro);
-  font-size: 15px;
-  font-weight: 900;
-}
-
-.estadistica small {
-  color: #d0dbd1;
-  font-size: 9px;
-}
-
-.boton-dorado {
-  border: 2px solid #fff0a0;
-  color: #241600;
-  background: linear-gradient(
-    180deg,
-    #fff47d 0%,
-    #ffca20 38%,
-    #e88b00 75%,
-    #ffdc49 100%
-  );
-  box-shadow:
-    0 0 9px #ffd43c,
-    0 0 22px rgba(255,178,0,.5),
-    inset 0 3px 5px rgba(255,255,255,.75),
-    inset 0 -5px 7px rgba(151,75,0,.35);
-  border-radius: 50px;
-  font-family: inherit;
-  font-weight: 900;
-  cursor: pointer;
-  transition: .25s;
-}
-
-.boton-dorado:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.12);
-}
-
-.boton-entrada {
-  width: min(390px, 90%);
-  padding: 18px 20px;
-  font-size: 16px;
-  animation: brillo 2s infinite alternate;
-}
-
-.boton-entrada span {
-  margin-left: 15px;
-  font-size: 20px;
-}
-
-.frase-final {
-  margin-top: 18px;
-  color: #ffe29a;
-  font-size: 11px;
-}
-
-.footer-portada {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: #bdcbbf;
-  font-size: 9px;
-  letter-spacing: 1px;
-}
-
-
-/* =====================================
-   PANTALLA 2: SORTEO
-===================================== */
+/* PANEL DERECHO */
 
 .contenido {
-  display: none;
-  width: 100%;
-  min-height: 100vh;
-  background:
-    linear-gradient(rgba(0,17,7,.74), rgba(0,15,6,.88)),
-    url("./assets/selva-fondo.png") center top / cover fixed;
+    min-width: 0;
+    padding: 15px 4%;
+    background:
+        radial-gradient(ellipse at top, #124421 0%, transparent 55%),
+        radial-gradient(ellipse at bottom, #0d361c, #020b05 75%);
+    position: relative;
 }
 
-.contenido.mostrar {
-  display: block;
-  animation: entradaSorteo .8s ease both;
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 135px;
+    position: relative;
 }
 
-.barra-superior {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  min-height: 90px;
-  padding: 8px 25px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  background: rgba(0,17,7,.88);
-  border-bottom: 1px solid rgba(255,198,41,.3);
-  backdrop-filter: blur(12px);
+.logo-pequeno {
+    width: 175px;
+    max-height: 135px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px gold);
 }
 
 .menu-btn {
-  justify-self: start;
-  background: transparent;
-  border: 0;
-  color: white;
-  font-size: 36px;
-  cursor: pointer;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 36px;
+    cursor: pointer;
+    box-shadow: none;
+    padding: 5px;
 }
 
-.logo-header {
-  grid-column: 2;
-  width: 135px;
-  height: 78px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(255,190,20,.45));
-}
-
-.whatsapp-header {
-  justify-self: end;
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  color: white;
-  text-decoration: none;
-  background: linear-gradient(#22dc50, #008b27);
-  border: 2px solid #8dff9f;
-  border-radius: 13px;
-  box-shadow: 0 0 15px rgba(0,255,66,.4);
-  font-size: 27px;
+.whatsapp {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 30px;
+    text-decoration: none;
+    background: #087d31;
+    border: 2px solid #68f18a;
+    box-shadow: 0 0 15px #00c853;
 }
 
 .menu {
-  display: none;
-  position: absolute;
-  top: 78px;
-  left: 15px;
-  width: 190px;
-  padding: 10px;
-  background: #003b18;
-  border: 1px solid var(--dorado);
-  border-radius: 12px;
-  box-shadow: 0 0 20px #000;
-}
-
-.menu.activo {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    background: #092b15;
+    border: 1px solid #d8a92b;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
 .menu a {
-  padding: 12px;
-  color: white;
-  font-size: 11px;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,.12);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.menu a:hover {
-  color: var(--dorado);
+.oculto {
+    display: none !important;
 }
 
-.contenido-interior {
-  width: min(900px, 100%);
-  margin: auto;
-  padding: 20px 25px 35px;
+/* TÍTULO DEL SORTEO */
+
+.titulo-sorteo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 5px;
 }
 
-.titulo-principal {
-  text-align: center;
-  margin: 8px 0 25px;
+.titulo-sorteo h1 {
+    font-size: clamp(24px, 3.5vw, 45px);
+    font-weight: 900;
+    text-align: center;
+    color: white;
+    padding: 10px 20px;
+    background: linear-gradient(#aeb2b5, #303236, #777b80);
+    border: 3px solid #fff;
+    border-radius: 20px;
+    text-shadow: 2px 3px 4px black;
+    box-shadow: 0 0 18px #fff2b0;
 }
 
-.titulo-plata {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 8px;
-  color: white;
-  border: 3px solid #d8d8d8;
-  border-radius: 50px;
-  background: linear-gradient(#fff, #888 35%, #252525 70%, #777);
-  box-shadow: 0 0 12px #fff, 0 5px 15px #000;
-  text-shadow: 2px 3px 4px #000;
+.billete-decoracion {
+    font-size: clamp(25px, 4vw, 45px);
 }
 
-.titulo-plata h1 {
-  font-size: clamp(18px, 3vw, 34px);
-  font-weight: 900;
-  font-style: italic;
+.subtitulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0 25px;
+    color: var(--dorado);
+    font-size: clamp(17px, 2.4vw, 28px);
+    font-weight: 900;
+    text-shadow: 0 0 12px gold;
 }
 
-.titulo-plata span {
-  font-size: 24px;
+.subtitulo span {
+    height: 2px;
+    width: 30px;
+    background: gold;
 }
-
-.subtitulo-dorado {
-  width: min(75%, 430px);
-  margin: 12px auto 0;
-  padding: 9px;
-  color: white;
-  border: 2px solid #fff0a0;
-  border-radius: 35px;
-  background: linear-gradient(#ffdf4b, #a45c00 50%, #ffcf27);
-  box-shadow: 0 0 12px #ffbd16;
-  font-size: clamp(13px, 2vw, 20px);
-  font-weight: 900;
-  text-shadow: 1px 2px 3px #000;
-}
-
 
 /* PREMIOS */
 
-.rejilla-premios {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px 15px;
+.premios {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px;
 }
 
-.tarjeta-premio {
-  position: relative;
-  min-height: 125px;
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid #eebc38;
-  border-radius: 20px;
-  background: linear-gradient(145deg, rgba(0,0,0,.9), rgba(16,48,18,.9));
-  box-shadow: 0 0 8px #ffc629, inset 0 0 15px rgba(255,190,0,.15);
+.premio {
+    min-width: 0;
+    position: relative;
+    padding: 28px 8px 15px;
+    text-align: center;
+    border: 2px solid #e5b52f;
+    border-radius: 18px;
+    background: radial-gradient(circle, #283023, #080d07);
+    box-shadow:
+        0 0 10px #e6b52a,
+        inset 0 0 15px rgba(255,196,45,.1);
+    animation: brillo 3s infinite alternate;
 }
 
-.tarjeta-premio strong {
-  color: #ffdc46;
-  font-size: clamp(30px, 4vw, 48px);
-  font-weight: 900;
-  font-style: italic;
-  text-shadow: 2px 3px 4px #000, 0 0 12px #e89b00;
+.puesto {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    padding: 6px 4px;
+    background: linear-gradient(#ff4c39, #a90000);
+    border: 1px solid #ffc15b;
+    border-radius: 7px;
+    font-size: clamp(11px, 1.5vw, 16px);
+    font-weight: 900;
+    white-space: nowrap;
 }
 
-.cinta {
-  position: absolute;
-  top: -17px;
-  left: 10%;
-  width: 80%;
-  padding: 7px 3px;
-  color: white;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 900;
-  background: linear-gradient(#ff4949, #b90000 60%, #780000);
-  border: 1px solid #ff9d9d;
-  clip-path: polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);
+.medalla {
+    position: absolute;
+    top: 36px;
+    left: 10px;
+    font-size: 18px;
 }
 
+.premio h2 {
+    color: #ffd23d;
+    font-size: clamp(25px, 4vw, 43px);
+    font-weight: 900;
+    font-style: italic;
+    text-shadow:
+        2px 3px 3px #000,
+        0 0 10px #dca000;
+}
 
 /* ACCESOS */
 
 .accesos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin: 25px 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 25px 0;
 }
 
 .acceso {
-  min-height: 100px;
-  padding: 10px 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  border: 2px solid #008b35;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #087e30, #003b17 70%);
-  box-shadow: inset 0 0 12px rgba(0,255,65,.15), 0 0 10px rgba(0,255,65,.2);
-  transition: .2s;
+    min-width: 0;
+    text-align: center;
+    padding: 12px 3px;
+    border: 2px solid #087f37;
+    border-radius: 17px;
+    background: linear-gradient(145deg, #0d5727, #021408);
+    color: white;
+    text-decoration: none;
+    font-size: clamp(10px, 1.2vw, 14px);
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(0,255,90,.2);
+    transition: .3s;
 }
 
 .acceso:hover {
-  transform: translateY(-4px);
-  border-color: var(--dorado);
+    transform: translateY(-5px);
+    border-color: gold;
 }
 
 .acceso span {
-  font-size: 28px;
-  filter: drop-shadow(0 0 5px #ffbf00);
+    display: block;
+    font-size: 28px;
+    margin-bottom: 8px;
 }
 
-.acceso small {
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.3;
+/* NUMERITOS */
+
+.numeros-seccion {
+    margin-top: 20px;
 }
-
-
-/* NÚMEROS */
 
 .titulo-numeros {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 2px solid #d7a927;
-  border-bottom: 2px solid #d7a927;
-  text-align: center;
-}
-
-.titulo-numeros h2 {
-  font-size: clamp(16px, 2.5vw, 26px);
-  font-weight: 900;
-  font-style: italic;
-  text-shadow: 2px 3px 5px #000;
+    text-align: center;
+    padding: 13px;
+    font-size: clamp(15px, 2vw, 22px);
+    font-weight: 900;
+    color: white;
+    background: linear-gradient(90deg, transparent, #14532a, transparent);
+    border-bottom: 2px solid gold;
+    text-shadow: 0 0 10px white;
 }
 
 .titulo-numeros span {
-  font-size: 26px;
+    color: gold;
+    margin-right: 10px;
 }
-
-.leyenda {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 18px;
-  margin: 18px 0;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.leyenda span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.leyenda i {
-  display: inline-block;
-  width: 19px;
-  height: 19px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,.7);
-}
-
-.disponible { background: #00c83d; }
-.reservado { background: #ffcb00; }
-.vendido { background: #ed1717; }
 
 .cuadricula {
-  display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 18px;
 }
 
 .numero {
-  min-width: 0;
-  padding: 10px 2px;
-  border: 2px solid #51ff6c;
-  border-radius: 9px;
-  background: linear-gradient(#13c943, #00651e);
-  color: white;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 900;
-  text-shadow: 1px 2px 3px #00320c;
-  box-shadow: 0 0 7px rgba(0,255,60,.35), inset 0 2px 5px rgba(255,255,255,.2);
-  cursor: pointer;
-  transition: .15s;
+    min-width: 0;
+    aspect-ratio: 1.15;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: clamp(11px, 1.4vw, 17px);
+    font-weight: 800;
+    background: linear-gradient(#087c29, #003a13);
+    border: 2px solid #13d443;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: .2s;
 }
 
-.numero:hover:not(:disabled) {
-  transform: scale(1.07);
-  filter: brightness(1.3);
+.numero:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px #13ff49;
 }
 
-/* CAMBIO: TODOS LOS NUMEROS SELECCIONADOS EN ROJO */
-.cuadricula .numero.seleccionado,
+/* NÚMERO SELECCIONADO */
+
 .numero.seleccionado {
-  background: linear-gradient(#ff5555, #c90000) !important;
-  border: 2px solid #ffaaaa !important;
-  color: #ffffff !important;
-  text-shadow: 1px 2px 3px #700000 !important;
-  box-shadow: 0 0 12px rgba(255, 0, 0, .9) !important;
-  transform: scale(1.05);
+    background: linear-gradient(#ffe36b, #c68b00);
+    color: #111;
+    border-color: #fff09b;
+    box-shadow: 0 0 12px gold;
 }
 
-.numero.reservado {
-  background: linear-gradient(#ffe75a, #d99b00);
-  border-color: #fff09a;
-  color: #241700;
-  cursor: not-allowed;
+/* TODOS LOS NÚMEROS VENDIDOS Y RESERVADOS EN VERDE */
+
+#cuadricula .numero.disponible,
+#cuadricula .numero.vendido,
+#cuadricula .numero.reservado,
+#cuadricula .numero:disabled {
+    background: linear-gradient(#087c29, #003a13) !important;
+    background-color: #087c29 !important;
+    border: 2px solid #13d443 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    box-shadow: 0 0 7px rgba(0,255,60,.35) !important;
+    text-shadow: 1px 2px 3px #00320c !important;
+    transform: none !important;
 }
 
-.numero.vendido {
-  background: linear-gradient(#ff4747, #a90000);
-  border-color: #ff7777;
-  color: white;
-  cursor: not-allowed;
+/* LEYENDA */
+
+.leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    font-size: 12px;
 }
+
+.leyenda span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.leyenda i {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+}
+
+.leyenda .disponible,
+.leyenda .reservado,
+.leyenda .vendido {
+    background: #009c23;
+}
+
+/* RESUMEN Y COMPRA */
 
 .resumen {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 15px;
-  margin-top: 15px;
-  border: 1px solid #d5a62b;
-  border-radius: 12px;
-  background: rgba(0,0,0,.65);
+    background: rgba(0,30,12,.9);
+    border: 1px solid #d7a92d;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
 }
 
-.resumen small {
-  display: block;
-  margin-bottom: 5px;
-  color: #d7e5d9;
-  font-size: 10px;
+.resumen h3 {
+    color: #ffe17a;
+    font-size: 16px;
 }
 
-.resumen strong {
-  font-size: 12px;
-  overflow-wrap: anywhere;
+.resumen p {
+    margin: 13px 0;
+    overflow-wrap: anywhere;
+    font-size: 13px;
 }
 
 .total {
-  text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-top: 1px solid #a57c19;
+    color: white;
 }
 
 .total strong {
-  color: var(--dorado);
-  font-size: 21px;
+    color: gold;
+    font-size: 23px;
 }
 
-.boton-comprar {
-  width: 100%;
-  margin: 18px 0;
-  padding: 17px 10px;
-  font-size: clamp(14px, 2vw, 22px);
+.btn-comprar {
+    width: 100%;
+    padding: 18px 8px;
+    margin-top: 12px;
+    border-radius: 50px;
+    border: 3px solid #fff1a0;
+    color: #100d00;
+    background: linear-gradient(#fff0a0, #ffc01d, #d98700);
+    font-size: clamp(13px, 1.7vw, 22px);
+    font-weight: 900;
+    box-shadow: 0 0 15px gold;
+    cursor: pointer;
+    transition: .3s;
 }
 
+/* INFORMACIÓN */
 
-/* FECHA Y PRECIO */
-
-.datos-sorteo {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 15px;
-  padding: 20px 12px;
-  border: 2px solid #e5b52f;
-  border-radius: 18px;
-  background: linear-gradient(120deg, rgba(0,0,0,.85), rgba(0,55,20,.9));
-  box-shadow: 0 0 12px rgba(255,192,35,.45);
+.informacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 18px 0;
+    padding: 15px;
+    border: 2px solid #d9aa2a;
+    border-radius: 16px;
+    background: #061b0d;
 }
 
-.dato {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.informacion > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 12px;
 }
 
-.dato > span {
-  font-size: 30px;
+.informacion > div:first-child {
+    border-right: 1px solid gold;
 }
 
-.dato small {
-  display: block;
-  font-size: 10px;
-  margin-bottom: 4px;
+.informacion span {
+    font-size: 28px;
 }
 
-.dato strong {
-  font-size: 12px;
+.informacion strong {
+    color: #ffe18a;
+    font-size: 16px;
 }
-
-.separador {
-  width: 2px;
-  height: 45px;
-  background: var(--dorado);
-}
-
 
 /* FORMULARIO */
 
-.formulario-seccion,
-.ganadores {
-  margin-top: 28px;
-  padding: 22px;
-  border: 1px solid #d7a72c;
-  border-radius: 16px;
-  background: rgba(0,25,9,.92);
-  box-shadow: 0 0 15px rgba(255,190,0,.13);
+.formulario {
+    padding: 22px;
+    border: 2px solid gold;
+    background: #071c0d;
+    border-radius: 18px;
+    text-align: center;
+    margin: 20px 0;
 }
 
-.formulario-seccion h2,
+.formulario h2 {
+    color: gold;
+    margin-bottom: 20px;
+}
+
+.formulario h3 {
+    color: gold;
+    margin: 20px 0;
+}
+
+.formulario label {
+    display: block;
+    text-align: left;
+    margin: 15px 0 7px;
+    color: #ffdf70;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    border: 1px solid gold;
+    background: #fff;
+    color: #111;
+    font-size: 15px;
+}
+
+.qr {
+    display: block;
+    width: 190px;
+    max-width: 80%;
+    margin: 15px auto;
+    padding: 8px;
+    border-radius: 12px;
+    background: white;
+}
+
+.formulario p {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ganadores {
+    text-align: center;
+    padding: 25px 10px;
+}
+
 .ganadores h2 {
-  color: var(--dorado);
-  font-size: 17px;
-  margin-bottom: 10px;
+    color: gold;
+    margin-bottom: 12px;
 }
 
-.formulario-seccion > p,
 .ganadores p {
-  font-size: 12px;
-  color: #d5e3d7;
-  line-height: 1.7;
-  margin-bottom: 20px;
+    font-size: 13px;
 }
 
-.formulario-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+footer {
+    padding: 20px 5px;
+    border-top: 1px solid #52753d;
+    text-align: center;
+    color: #d1d1d1;
+    font-size: 11px;
+    line-height: 2;
 }
 
-.campos {
-  display: flex;
-  flex-direction: column;
+footer img {
+    width: 100px;
+    display: block;
+    margin: auto;
 }
 
-.campos label {
-  color: var(--dorado-claro);
-  font-size: 11px;
-  font-weight: 700;
-  margin: 12px 0 7px;
+/* ANIMACIONES */
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-.campos input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #278d43;
-  border-radius: 8px;
-  color: white;
-  background: #001b0b;
-  font-family: inherit;
-  font-size: 11px;
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-.campos input:focus {
-  outline: 1px solid var(--dorado);
-}
-
-.boton-enviar {
-  padding: 14px;
-  margin-top: 18px;
-  font-size: 12px;
-}
-
-.qr-contenedor {
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #d5a62b;
-  border-radius: 12px;
-  background: rgba(0,0,0,.5);
-}
-
-.qr-contenedor h3 {
-  color: var(--dorado);
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-
-.qr-contenedor img {
-  width: min(100%, 220px);
-  padding: 7px;
-  background: white;
-  border-radius: 10px;
-}
-
-.qr-contenedor p {
-  margin-top: 10px;
-  font-size: 10px;
-  color: #d5e3d7;
-  line-height: 1.5;
-}
-
-/* MONTO EXACTO DE YAPE */
-
-.monto-yape {
-  width: min(100%, 280px);
-  margin: 15px auto 5px;
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  border: 2px solid var(--dorado);
-  border-radius: 12px;
-  background: linear-gradient(
-    145deg,
-    rgba(0,65,25,.95),
-    rgba(0,20,8,.98)
-  );
-  box-shadow:
-    0 0 12px rgba(255,198,41,.3),
-    inset 0 0 12px rgba(255,198,41,.08);
-}
-
-.monto-yape small {
-  color: var(--dorado-claro);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.monto-yape strong {
-  color: #fff0a0;
-  font-size: 30px;
-  font-weight: 900;
-  text-shadow: 0 0 12px rgba(255,198,41,.55);
-}
-
-.ganadores {
-  text-align: center;
-}
-
-.ganadores strong {
-  display: block;
-  color: var(--dorado);
-  font-size: 16px;
-  margin-top: 15px;
-}
-
-.footer-contenido {
-  padding: 20px;
-  text-align: center;
-  color: #c7d5c9;
-  font-size: 9px;
-  letter-spacing: 1px;
-  border-top: 1px solid rgba(255,197,38,.35);
-}
-
-
-/* =====================================
-   ANIMACIONES Y TRANSICIONES
-===================================== */
-
-.portada.ocultar {
-  display: none !important;
-}
-
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes entradaSorteo {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulso {
-  50% {
-    opacity: .35;
-    box-shadow: 0 0 2px #00ff5e;
-  }
+@keyframes entradaLogo {
+    from {
+        opacity: 0;
+        transform: translateY(-70px) scale(.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 @keyframes brillo {
-  from {
-    box-shadow: 0 0 12px #ffcb36;
-  }
-  to {
-    box-shadow: 0 0 28px #ffcb36, 0 0 45px rgba(255,180,0,.35);
-  }
+    from { box-shadow: 0 0 7px #b88b1c; }
+    to { box-shadow: 0 0 20px #ffda4d; }
 }
 
+/* CELULARES */
 
-/* =====================================
-   RESPONSIVE
-===================================== */
+@media (max-width: 760px) {
 
-@media (max-width: 700px) {
-  .portada {
-    padding: 15px 18px;
-  }
+    .pagina {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .marca {
-    font-size: 8px;
-  }
+    .portada {
+        position: relative;
+        height: auto;
+        min-height: 760px;
+        border-right: none;
+        border-bottom: 4px solid gold;
+        padding: 65px 7%;
+    }
 
-  .marca img {
-    width: 48px;
-    height: 48px;
-  }
+    .logo-contenedor {
+        max-width: 440px;
+    }
 
-  .estado {
-    font-size: 8px;
-    padding: 8px 10px;
-  }
+    .aro {
+        width: 80%;
+    }
 
-  .logo-principal {
-    width: min(250px, 70%);
-    height: 180px;
-  }
+    .contenido {
+        padding: 12px 4%;
+    }
 
-  .bienvenida h1 {
-    font-size: 42px;
-  }
+    .topbar {
+        min-height: 110px;
+    }
 
-  .descripcion-portada {
-    font-size: 11px;
-  }
+    .logo-pequeno {
+        width: 140px;
+        max-height: 110px;
+    }
 
-  .estadisticas {
-    gap: 7px;
-    margin: 22px auto;
-  }
+    .premio h2 {
+        font-size: clamp(25px, 7vw, 40px);
+    }
 
-  .estadistica {
-    padding: 13px 4px;
-  }
+    .cuadricula {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 9px;
+    }
 
-  .estadistica span {
-    font-size: 22px;
-  }
+    .numero {
+        font-size: 16px;
+    }
 
-  .estadistica strong {
-    font-size: 11px;
-  }
+    .accesos {
+        gap: 7px;
+    }
 
-  .estadistica small {
-    font-size: 8px;
-  }
+    .acceso {
+        font-size: 10px;
+        padding: 10px 2px;
+    }
 
-  .boton-entrada {
-    font-size: 13px;
-  }
-
-  .footer-portada {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 8px;
-  }
-
-  .contenido {
-    background-attachment: scroll;
-  }
-
-  .barra-superior {
-    min-height: 80px;
-    padding: 5px 15px;
-  }
-
-  .logo-header {
-    width: 115px;
-    height: 68px;
-  }
-
-  .menu-btn {
-    font-size: 30px;
-  }
-
-  .whatsapp-header {
-    width: 42px;
-    height: 42px;
-    font-size: 23px;
-  }
-
-  .contenido-interior {
-    padding: 15px 13px 25px;
-  }
-
-  .titulo-plata h1 {
-    font-size: 19px;
-  }
-
-  .rejilla-premios {
-    gap: 16px 10px;
-  }
-
-  .tarjeta-premio {
-    min-height: 105px;
-    border-radius: 15px;
-  }
-
-  .tarjeta-premio strong {
-    font-size: 32px;
-  }
-
-  .cinta {
-    font-size: 11px;
-  }
-
-  .accesos {
-    gap: 7px;
-  }
-
-  .acceso {
-    min-height: 90px;
-    border-radius: 12px;
-  }
-
-  .acceso span {
-    font-size: 24px;
-  }
-
-  .acceso small {
-    font-size: 8px;
-  }
-
-  .cuadricula {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .numero {
-    padding: 12px 3px;
-    font-size: 13px;
-  }
-
-  .leyenda {
-    gap: 10px;
-    font-size: 9px;
-  }
-
-  .datos-sorteo {
-    padding: 13px 7px;
-    gap: 7px;
-  }
-
-  .dato {
-    gap: 6px;
-  }
-
-  .dato > span {
-    font-size: 23px;
-  }
-
-  .dato small {
-    font-size: 8px;
-  }
-
-  .dato strong {
-    font-size: 9px;
-  }
-
-  .formulario-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .monto-yape strong {
-    font-size: 27px;
-  }
+    .acceso span {
+        font-size: 24px;
+    }
 }
 
-@media (max-width: 360px) {
-  .bienvenida h1 {
-    font-size: 35px;
-  }
-
-  .estadistica strong {
-    font-size: 9px;
-  }
-
-  .resumen {
-    flex-direction: column;
-  }
-
-  .total {
-    text-align: left;
-  }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
 }
