@@ -1,6 +1,3 @@
-// =====================================
-// CONFIGURACIÓN DEL SORTEO
-// =====================================
 
 const CONFIG = {
   precio: 5,
@@ -9,74 +6,79 @@ const CONFIG = {
   whatsapp: "51956069098"
 };
 
-// =====================================
-// ESTADOS DE LOS NÚMEROS
-// =====================================
-
 const numerosVendidos = [];
 const numerosReservados = [];
 
 let seleccionados = [];
 
-// =====================================
-// INGRESAR AL SORTEO
-// =====================================
 
+// ENTRAR A LA SEGUNDA PANTALLA
 function irAlSorteo() {
   const portada = document.getElementById("portada");
   const sorteo = document.getElementById("sorteo");
 
-  portada.style.setProperty("display", "none", "important");
-  sorteo.style.setProperty("display", "block", "important");
+  if (!portada || !sorteo) {
+    console.error("No se encontraron las secciones del sorteo.");
+    alert("No se pudo abrir el sorteo. Recarga la página.");
+    return;
+  }
 
-  generarNumeros();
-  actualizarResumen();
+  portada.classList.add("ocultar");
+  sorteo.classList.add("mostrar");
 
-  window.scrollTo(0, 0);
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
-// =====================================
-// GENERAR LOS 275 NÚMEROS
-// =====================================
 
+// GENERAR LOS 275 NUMEROS
 function generarNumeros() {
   const cuadricula = document.getElementById("cuadricula");
+
   if (!cuadricula) return;
 
   cuadricula.innerHTML = "";
 
-  for (let numero = 1; numero <= CONFIG.cantidadNumeros; numero++) {
+  for (let i = 1; i <= CONFIG.cantidadNumeros; i++) {
+    const numero = String(i);
     const boton = document.createElement("button");
 
+    boton.type = "button";
     boton.textContent = numero;
-    boton.classList.add("numero");
+    boton.className = "numero";
 
     if (numerosVendidos.includes(numero)) {
       boton.classList.add("vendido");
       boton.disabled = true;
+      boton.title = "Número vendido";
+
     } else if (numerosReservados.includes(numero)) {
       boton.classList.add("reservado");
       boton.disabled = true;
-    } else {
-      boton.addEventListener("click", () => seleccionarNumero(numero, boton));
-    }
+      boton.title = "Número reservado";
 
-    if (seleccionados.includes(numero)) {
-      boton.classList.add("seleccionado");
+    } else {
+      boton.addEventListener("click", function () {
+        seleccionarNumero(numero, boton);
+      });
     }
 
     cuadricula.appendChild(boton);
   }
 }
 
-// =====================================
-// SELECCIONAR NÚMEROS
-// =====================================
 
+// SELECCIONAR Y DESELECCIONAR NUMEROS
 function seleccionarNumero(numero, boton) {
   if (seleccionados.includes(numero)) {
-    seleccionados = seleccionados.filter(n => n !== numero);
+    seleccionados = seleccionados.filter(function (n) {
+      return n !== numero;
+    });
+
     boton.classList.remove("seleccionado");
+
   } else {
     seleccionados.push(numero);
     boton.classList.add("seleccionado");
@@ -85,118 +87,167 @@ function seleccionarNumero(numero, boton) {
   actualizarResumen();
 }
 
-// =====================================
-// CALCULAR TOTAL
-// =====================================
 
+// CALCULAR PRECIO Y PROMOCION
+// 1 número = S/5
+// 2 números = S/10
+// 3 números = S/10
+// 4 números = S/15
+// 5 números = S/20
+// 6 números = S/20
 function calcularTotal(cantidad) {
-  return Math.floor(cantidad / 3) * 10 + (cantidad % 3) * 5;
+  const grupos = Math.floor(cantidad / 3);
+  const restantes = cantidad % 3;
+
+  return (grupos * 10) + (restantes * CONFIG.precio);
 }
 
-// =====================================
-// ACTUALIZAR RESUMEN
-// =====================================
 
+// ACTUALIZAR RESUMEN Y MONTO DE YAPE
 function actualizarResumen() {
-  const cantidad = seleccionados.length;
-  const total = calcularTotal(cantidad);
+  const ordenados = seleccionados.slice().sort(function (a, b) {
+    return Number(a) - Number(b);
+  });
 
-  const numerosSeleccionados = document.getElementById("numerosSeleccionados");
+  const total = calcularTotal(ordenados.length);
+
+  const numerosElemento = document.getElementById("numerosSeleccionados");
   const totalElemento = document.getElementById("total");
+  const montoYape = document.getElementById("montoYape");
 
-  if (numerosSeleccionados) {
-    numerosSeleccionados.textContent = cantidad
-      ? seleccionados.sort((a, b) => a - b).join(", ")
+  if (numerosElemento) {
+    numerosElemento.textContent = ordenados.length
+      ? ordenados.join(", ")
       : "Ninguno";
   }
 
   if (totalElemento) {
-    totalElemento.textContent = `S/ ${total.toFixed(2)}`;
+    totalElemento.textContent = "S/. " + total.toFixed(2);
+  }
+
+  // Actualizar automáticamente el monto que debe pagar por Yape
+  if (montoYape) {
+    montoYape.textContent = "S/ " + total.toFixed(2);
   }
 }
 
-// =====================================
-// MENÚ
-// =====================================
 
+// MENU
 function toggleMenu() {
-  document.getElementById("menu")?.classList.toggle("activo");
+  const menu = document.getElementById("menu");
+
+  if (menu) {
+    menu.classList.toggle("activo");
+  }
 }
 
 function cerrarMenu() {
-  document.getElementById("menu")?.classList.remove("activo");
+  const menu = document.getElementById("menu");
+
+  if (menu) {
+    menu.classList.remove("activo");
+  }
 }
 
-// =====================================
-// FORMULARIO
-// =====================================
 
+// IR AL FORMULARIO
 function abrirFormulario() {
   if (seleccionados.length === 0) {
-    alert("Primero selecciona tus números.");
+    alert("Primero selecciona tus numeritos.");
     return;
   }
 
   const formulario = document.getElementById("participar");
+
   if (formulario) {
-    formulario.style.display = "block";
-    formulario.scrollIntoView({ behavior: "smooth" });
+    formulario.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 }
 
-// =====================================
-// ENVIAR PARTICIPACIÓN POR WHATSAPP
-// =====================================
 
+// ENVIAR PARTICIPACION DIRECTAMENTE A WHATSAPP
 function enviarWhatsApp() {
-  const nombre = document.getElementById("nombre")?.value.trim();
-  const celular = document.getElementById("celular")?.value.trim();
-  const comprobante = document.getElementById("comprobante")?.files[0];
+  const nombreElemento = document.getElementById("nombre");
+  const celularElemento = document.getElementById("celular");
+  const archivo = document.getElementById("comprobante");
 
-  if (!nombre || !celular || !comprobante) {
-    alert("Completa tus datos y selecciona tu comprobante de Yape.");
+  if (!nombreElemento || !celularElemento || !archivo) {
+    alert("No se encontró el formulario completo.");
     return;
   }
 
-  if (!/^\d{9}$/.test(celular)) {
-    alert("Ingresa un número de celular válido de 9 dígitos.");
-    return;
-  }
+  const nombre = nombreElemento.value.trim();
+  const celular = celularElemento.value.trim();
+  const comprobante = archivo.files[0];
 
   if (seleccionados.length === 0) {
     alert("Selecciona al menos un número.");
     return;
   }
 
-  const total = calcularTotal(seleccionados.length);
+  if (!nombre || !celular) {
+    alert("Completa tu nombre y número de celular.");
+    return;
+  }
+
+  if (!/^[0-9]{9}$/.test(celular)) {
+    alert("Ingresa un celular válido de 9 dígitos.");
+    return;
+  }
+
+  if (!comprobante || !comprobante.type.startsWith("image/")) {
+    alert("Adjunta tu comprobante de Yape.");
+    return;
+  }
+
+  const telefono = CONFIG.whatsapp.replace(/[^0-9]/g, "");
+
+  if (!/^51[0-9]{9}$/.test(telefono)) {
+    alert("Configura un número válido de WhatsApp en app.js.");
+    return;
+  }
+
+  const ordenados = seleccionados.slice().sort(function (a, b) {
+    return Number(a) - Number(b);
+  });
+
+  const total = calcularTotal(ordenados.length);
 
   const mensaje =
-    `¡Hola! Quiero participar en el sorteo.%0A%0A` +
-    `Nombre: ${encodeURIComponent(nombre)}%0A` +
-    `Celular: ${encodeURIComponent(celular)}%0A` +
-    `Números: ${seleccionados.sort((a, b) => a - b).join(", ")}%0A` +
-    `Total: S/ ${total.toFixed(2)}%0A%0A` +
-    `Adjuntaré mi comprobante de Yape.`;
+    "🌿 SORTEOS JEREMY ASHTA 🌿\n\n" +
+    "🎟️ NUEVA PARTICIPACIÓN\n\n" +
+    "👤 Nombre: " + nombre + "\n" +
+    "📱 Celular: " + celular + "\n\n" +
+    "🎫 Números: " + ordenados.join(", ") + "\n\n" +
+    "💰 Total a pagar: S/ " + total.toFixed(2) + "\n" +
+    "📅 Fecha: " + CONFIG.fechaSorteo + "\n\n" +
+    "📎 Adjunto mi comprobante de pago.";
 
-  window.open(
-    `https://wa.me/${CONFIG.whatsapp}?text=${mensaje}`,
-    "_blank"
-  );
+  const url =
+    "https://wa.me/" + telefono + "?text=" + encodeURIComponent(mensaje);
+
+  window.open(url, "_blank");
 }
 
-// =====================================
-// INICIAR PÁGINA
-// =====================================
 
-document.addEventListener("DOMContentLoaded", () => {
+// INICIALIZACION
+document.addEventListener("DOMContentLoaded", function () {
   generarNumeros();
   actualizarResumen();
 
   const fecha = document.getElementById("fechaSorteo");
-  if (fecha) fecha.textContent = CONFIG.fechaSorteo;
 
+  if (fecha) {
+    fecha.textContent = CONFIG.fechaSorteo;
+  }
+
+  const telefono = CONFIG.whatsapp.replace(/[^0-9]/g, "");
   const contacto = document.getElementById("whatsappContacto");
-  if (contacto) {
-    contacto.href = `https://wa.me/${CONFIG.whatsapp}`;
+
+  if (contacto && /^51[0-9]{9}$/.test(telefono)) {
+    contacto.href = "https://wa.me/" + telefono;
   }
 });
