@@ -75,12 +75,10 @@ function generarNumeros() {
       boton.classList.add("vendido");
       boton.disabled = true;
       boton.title = "Número vendido";
-
     } else if (numerosReservados.includes(numero)) {
       boton.classList.add("reservado");
       boton.disabled = true;
       boton.title = "Número reservado";
-
     } else {
       boton.classList.add("disponible");
 
@@ -141,17 +139,24 @@ function calcularTotal(cantidad) {
 function actualizarResumen() {
   const textoNumeros = document.getElementById("numerosSeleccionados");
   const textoTotal = document.getElementById("total");
+  const montoYape = document.getElementById("montoYape");
 
-  if (!textoNumeros || !textoTotal) return;
-
-  textoNumeros.textContent =
-    seleccionados.length === 0
-      ? "Ninguno"
-      : seleccionados.join(", ");
+  if (textoNumeros) {
+    textoNumeros.textContent =
+      seleccionados.length === 0
+        ? "Ninguno"
+        : seleccionados.join(", ");
+  }
 
   const total = calcularTotal(seleccionados.length);
 
-  textoTotal.textContent = "S/. " + total.toFixed(2);
+  if (textoTotal) {
+    textoTotal.textContent = "S/. " + total.toFixed(2);
+  }
+
+  if (montoYape) {
+    montoYape.textContent = "S/. " + total.toFixed(2);
+  }
 }
 
 // ==========================================
