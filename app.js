@@ -1,3 +1,6 @@
+// ==========================================
+// CONFIGURACIÓN DEL SORTEO
+// ==========================================
 
 const CONFIG = {
   precio: 5,
@@ -7,103 +10,14 @@ const CONFIG = {
 };
 
 // ==========================================
-// CONEXIÓN CON FIREBASE
+// ESTADOS DE LOS NÚMEROS
 // ==========================================
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAeF2asSss4WLPB5s_lk4dz6IWykzFAnMyo",
-  authDomain: "sorteos-jeremy-ashta.firebaseapp.com",
-  projectId: "sorteos-jeremy-ashta",
-  storageBucket: "sorteos-jeremy-ashta.firebasestorage.app",
-  messagingSenderId: "1063051655246",
-  appId: "1:1063051655246:web:a0999b935ee5aaba306b1f"
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let firebaseListo = false;
-let usuarioAutenticado = false;
-let seleccionados = [];
-let reservaEnProceso = false;
 
 const numerosVendidos = [];
 const numerosReservados = [];
 
-// ==========================================
-// INICIAR FIREBASE
-// ==========================================
-
-async function iniciarFirebase() {
-  try {
-    if (!auth.currentUser) {
-      await auth.signInAnonymously();
-    }
-
-    usuarioAutenticado = true;
-    firebaseListo = true;
-
-    console.log("Firebase conectado correctamente.");
-
-    escucharNumeros();
-
-  } catch (error) {
-    usuarioAutenticado = false;
-    firebaseListo = false;
-
-    console.error("Error al conectar Firebase:", error);
-
-    alert("No se pudo conectar con Firebase: " + error.message);
-  }
-}
-
-// ==========================================
-// ESCUCHAR NÚMEROS EN TIEMPO REAL
-// ==========================================
-
-function escucharNumeros() {
-  db.collection("numeros").onSnapshot(
-    (snapshot) => {
-      numerosVendidos.length = 0;
-      numerosReservados.length = 0;
-
-      snapshot.forEach((doc) => {
-        const datos = doc.data();
-        const numero = String(datos.numero || doc.id);
-
-        if (datos.estado === "vendido") {
-          numerosVendidos.push(numero);
-        }
-
-        if (datos.estado === "reservado") {
-          numerosReservados.push(numero);
-        }
-      });
-
-      // Quitar de la selección los números que otra persona reservó.
-      const anteriores = [...seleccionados];
-
-      seleccionados = seleccionados.filter((numero) =>
-        !numerosVendidos.includes(numero) &&
-        !numerosReservados.includes(numero)
-      );
-
-      if (anteriores.length !== seleccionados.length) {
-        alert("Uno de tus números seleccionados acaba de ser reservado por otra persona.");
-      }
-
-      generarNumeros();
-    },
-    (error) => {
-      console.error("Error al escuchar números:", error);
-      alert("No se pudieron cargar los números. Revisa las reglas de Firestore.");
-    }
-  );
-}
+let seleccionados = [];
+let envioEnProceso = false;
 
 // ==========================================
 // CAMBIAR DE PANTALLA
@@ -252,63 +166,11 @@ function abrirFormulario() {
 }
 
 // ==========================================
-// RESERVAR NÚMEROS EN FIRESTORE
-// ==========================================
-
-async function reservarNumeros() {
-  if (!firebaseListo || !usuarioAutenticado) {
-    throw new Error("Firebase todavía no está conectado.");
-  }
-
-  if (seleccionados.length === 0) {
-    throw new Error("No has seleccionado números.");
-  }
-
-  const numeros = [...seleccionados];
-  const reservaId = db.collection("reservas").doc().id;
-
-  await db.runTransaction(async (transaction) => {
-    const referencias = numeros.map((numero) =>
-      db.collection("numeros").doc(numero)
-    );
-
-    const documentos = [];
-
-    // Leer todos los números antes de escribir.
-    for (const referencia of referencias) {
-      documentos.push(await transaction.get(referencia));
-    }
-
-    // Verificar disponibilidad.
-    for (let i = 0; i < documentos.length; i++) {
-      if (documentos[i].exists) {
-        throw new Error(
-          "El número " + numeros[i] +
-          " ya está reservado o vendido. Selecciona otro."
-        );
-      }
-    }
-
-    // Reservar todos los números en una transacción.
-    for (let i = 0; i < referencias.length; i++) {
-      transaction.set(referencias[i], {
-        numero: Number(numeros[i]),
-        estado: "reservado",
-        reservaId: reservaId,
-        creado: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  });
-
-  return reservaId;
-}
-
-// ==========================================
 // ENVIAR PARTICIPACIÓN POR WHATSAPP
 // ==========================================
 
 async function enviarWhatsApp() {
-  if (reservaEnProceso) return;
+  if (envioEnProceso) return;
 
   const nombre = document.getElementById("nombre").value.trim();
   const celular = document.getElementById("celular").value.trim();
@@ -334,11 +196,6 @@ async function enviarWhatsApp() {
     return;
   }
 
-  if (!firebaseListo) {
-    alert("Espera un momento mientras se conecta Firebase.");
-    return;
-  }
-
   const total = calcularTotal(seleccionados.length);
   const numerosTexto = [...seleccionados].join(", ");
 
@@ -348,30 +205,28 @@ async function enviarWhatsApp() {
     "Celular: " + celular + "\n" +
     "Números: " + numerosTexto + "\n" +
     "Total: S/. " + total.toFixed(2) + "\n\n" +
-    "¿Deseas reservar tus números y continuar a WhatsApp?"
+    "¿Deseas continuar a WhatsApp?"
   );
 
   if (!confirmar) return;
 
-  reservaEnProceso = true;
+  envioEnProceso = true;
 
   const boton = document.querySelector(".boton-enviar");
-  const textoOriginal = boton.textContent;
 
-  boton.disabled = true;
-  boton.textContent = "RESERVANDO NÚMEROS...";
+  if (boton) {
+    boton.disabled = true;
+    boton.textContent = "ABRIENDO WHATSAPP...";
+  }
 
   try {
-    const reservaId = await reservarNumeros();
-
     const mensaje =
       "🌿 *SORTEOS JEREMY ASHTA* 🌿\n\n" +
       "¡Hola! Quiero confirmar mi participación.\n\n" +
       "👤 *Nombre:* " + nombre + "\n" +
       "📱 *Celular:* " + celular + "\n" +
       "🎟️ *Números:* " + numerosTexto + "\n" +
-      "💰 *Total a pagar:* S/. " + total.toFixed(2) + "\n" +
-      "🧾 *Código de reserva:* " + reservaId + "\n\n" +
+      "💰 *Total a pagar:* S/. " + total.toFixed(2) + "\n\n" +
       "Adjunto mi comprobante de Yape para confirmar mi pago.\n\n" +
       "¡Muchas gracias! 🍀";
 
@@ -381,25 +236,19 @@ async function enviarWhatsApp() {
       "?text=" +
       encodeURIComponent(mensaje);
 
-    alert(
-      "¡Tus números fueron reservados correctamente!\n\n" +
-      "Ahora continuarás a WhatsApp. Recuerda adjuntar tu comprobante."
-    );
-
     window.location.href = url;
 
   } catch (error) {
-    console.error("Error al reservar:", error);
-
-    alert(
-      error.message ||
-      "Ocurrió un error al reservar tus números. Inténtalo nuevamente."
-    );
+    console.error("Error al enviar:", error);
+    alert("Ocurrió un error. Inténtalo nuevamente.");
 
   } finally {
-    reservaEnProceso = false;
-    boton.disabled = false;
-    boton.textContent = textoOriginal;
+    envioEnProceso = false;
+
+    if (boton) {
+      boton.disabled = false;
+      boton.textContent = "ENVIAR POR WHATSAPP";
+    }
   }
 }
 
@@ -421,5 +270,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   generarNumeros();
-  iniciarFirebase();
+  actualizarResumen();
 });
