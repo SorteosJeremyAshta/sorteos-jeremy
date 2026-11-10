@@ -1,4 +1,3 @@
-
 const CONFIG = {
   precio: 5,
   cantidadNumeros: 275,
