@@ -562,13 +562,14 @@ body {
   filter: brightness(1.3);
 }
 
-/* NÚMEROS SELECCIONADOS: ROJO */
+/* CAMBIO: TODOS LOS NUMEROS SELECCIONADOS EN ROJO */
+.cuadricula .numero.seleccionado,
 .numero.seleccionado {
-  background: linear-gradient(#ff5555, #c90000);
-  border: 2px solid #ff9999;
-  color: white;
-  text-shadow: 1px 2px 3px #700000;
-  box-shadow: 0 0 12px rgba(255, 0, 0, .8);
+  background: linear-gradient(#ff5555, #c90000) !important;
+  border: 2px solid #ffaaaa !important;
+  color: #ffffff !important;
+  text-shadow: 1px 2px 3px #700000 !important;
+  box-shadow: 0 0 12px rgba(255, 0, 0, .9) !important;
   transform: scale(1.05);
 }
 
