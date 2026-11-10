@@ -1,10 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#001407">
+
   <title>Sorteos Jeremy Ashta</title>
+
   <link rel="stylesheet" href="./styles.css">
 
   <!-- Distribución de las tarjetas de portada -->
@@ -38,6 +41,31 @@
     .estadistica-promocion small {
       color: #ffc400;
     }
+
+    /* MONTO EXACTO DE YAPE */
+    .monto-yape {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin: 15px auto;
+      padding: 12px;
+      border: 1px solid #ffc400;
+      border-radius: 12px;
+      background: rgba(255, 193, 7, 0.10);
+    }
+
+    .monto-yape small {
+      color: #ffc400;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .monto-yape strong {
+      color: #ffc400;
+      font-size: 28px;
+      font-weight: 900;
+    }
   </style>
 </head>
 
@@ -47,6 +75,7 @@
   <section class="portada" id="portada">
 
     <header class="portada-header">
+
       <div class="marca">
         <img src="./assets/logo.png" alt="Sorteos Jeremy Ashta">
         <span>SORTEOS JEREMY ASHTA</span>
@@ -55,11 +84,14 @@
       <span class="estado">
         <i></i> SORTEOS ACTIVOS
       </span>
+
     </header>
 
     <main class="bienvenida">
 
-      <div class="etiqueta">🌿 BIENVENIDO A NUESTRA COMUNIDAD</div>
+      <div class="etiqueta">
+        🌿 BIENVENIDO A NUESTRA COMUNIDAD
+      </div>
 
       <img
         class="logo-principal"
@@ -67,14 +99,17 @@
         alt="Logo de Sorteos Jeremy Ashta"
       >
 
-      <h1>LA SUERTE ESTÁ<br><span>DE TU LADO</span></h1>
+      <h1>
+        LA SUERTE ESTÁ<br>
+        <span>DE TU LADO</span>
+      </h1>
 
       <p class="descripcion-portada">
         Participa en nuestros sorteos y gana increíbles premios en efectivo.
         Elige tus numeritos y conviértete en uno de nuestros próximos ganadores.
       </p>
 
-      <!-- ESTADÍSTICAS: 2 ARRIBA Y 2 ABAJO -->
+      <!-- ESTADÍSTICAS -->
       <div class="estadisticas">
 
         <div class="estadistica">
@@ -107,7 +142,9 @@
         ENTRAR AL SORTEO <span>➜</span>
       </button>
 
-      <p class="frase-final">✨ ¡Tu próximo premio podría estar aquí!</p>
+      <p class="frase-final">
+        ✨ ¡Tu próximo premio podría estar aquí!
+      </p>
 
     </main>
 
@@ -124,14 +161,27 @@
 
     <header class="barra-superior">
 
-      <button class="menu-btn" onclick="toggleMenu()" aria-label="Abrir menú">
+      <button
+        class="menu-btn"
+        onclick="toggleMenu()"
+        aria-label="Abrir menú"
+      >
         ☰
       </button>
 
-      <img class="logo-header" src="./assets/logo.png" alt="Logo">
+      <img
+        class="logo-header"
+        src="./assets/logo.png"
+        alt="Logo"
+      >
 
-      <a class="whatsapp-header" id="whatsappContacto"
-         href="#" target="_blank" aria-label="WhatsApp">
+      <a
+        class="whatsapp-header"
+        id="whatsappContacto"
+        href="#"
+        target="_blank"
+        aria-label="WhatsApp"
+      >
         ☎
       </a>
 
@@ -144,16 +194,21 @@
 
     </header>
 
+
     <main class="contenido-interior">
 
       <div class="titulo-principal">
+
         <div class="titulo-plata">
           <span>💵</span>
           <h1>SORTEO DE PLATA</h1>
           <span>💵</span>
         </div>
 
-        <div class="subtitulo-dorado">4 GRANDES PREMIOS</div>
+        <div class="subtitulo-dorado">
+          4 GRANDES PREMIOS
+        </div>
+
       </div>
 
 
@@ -223,14 +278,24 @@
         </div>
 
         <div class="leyenda">
-          <span><i class="disponible"></i> Disponible</span>
-          <span><i class="reservado"></i> Reservado</span>
-          <span><i class="vendido"></i> Vendido</span>
+          <span>
+            <i class="disponible"></i> Disponible
+          </span>
+
+          <span>
+            <i class="reservado"></i> Reservado
+          </span>
+
+          <span>
+            <i class="vendido"></i> Vendido
+          </span>
         </div>
 
+        <!-- CUADRÍCULA DE NÚMEROS -->
         <div class="cuadricula" id="cuadricula"></div>
 
         <div class="resumen">
+
           <div>
             <small>Números seleccionados</small>
             <strong id="numerosSeleccionados">Ninguno</strong>
@@ -240,9 +305,13 @@
             <small>Total a pagar</small>
             <strong id="total">S/. 0.00</strong>
           </div>
+
         </div>
 
-        <button class="boton-dorado boton-comprar" onclick="abrirFormulario()">
+        <button
+          class="boton-dorado boton-comprar"
+          onclick="abrirFormulario()"
+        >
           🛒 COMPRAR MIS NUMERITOS
         </button>
 
@@ -254,6 +323,7 @@
 
         <div class="dato">
           <span>📅</span>
+
           <div>
             <small>Fecha del sorteo:</small>
             <strong id="fechaSorteo">Por definir</strong>
@@ -264,6 +334,7 @@
 
         <div class="dato">
           <span>🎟️</span>
+
           <div>
             <small>Precio por número:</small>
             <strong>S/. 5.00</strong>
@@ -277,32 +348,71 @@
       <section id="participar" class="formulario-seccion">
 
         <h2>📲 CONFIRMA TU PARTICIPACIÓN</h2>
-        <p>Completa tus datos y adjunta tu comprobante de Yape.</p>
+
+        <p>
+          Completa tus datos, verifica el monto exacto y adjunta tu comprobante de Yape.
+        </p>
 
         <div class="formulario-grid">
 
           <div class="campos">
 
             <label for="nombre">Nombre completo</label>
-            <input id="nombre" type="text" placeholder="Nombres y apellidos">
+
+            <input
+              id="nombre"
+              type="text"
+              placeholder="Nombres y apellidos"
+            >
 
             <label for="celular">Número de celular</label>
-            <input id="celular" type="tel" maxlength="9"
-                   placeholder="Tu celular de 9 dígitos">
+
+            <input
+              id="celular"
+              type="tel"
+              maxlength="9"
+              placeholder="Tu celular de 9 dígitos"
+            >
 
             <label for="comprobante">Comprobante de pago</label>
-            <input id="comprobante" type="file" accept="image/*">
 
-            <button class="boton-dorado boton-enviar" onclick="enviarWhatsApp()">
+            <input
+              id="comprobante"
+              type="file"
+              accept="image/*"
+            >
+
+            <button
+              class="boton-dorado boton-enviar"
+              onclick="enviarWhatsApp()"
+            >
               ENVIAR MI PARTICIPACIÓN
             </button>
 
           </div>
 
+
+          <!-- CÓDIGO QR YAPE -->
           <div class="qr-contenedor">
+
             <h3>ESCANEA Y YAPEA</h3>
-            <img src="./assets/yape-qr.png" alt="Código QR de Yape">
-            <p>Realiza el pago y adjunta tu comprobante.</p>
+
+            <img
+              src="./assets/yape-qr.png"
+              alt="Código QR de Yape"
+            >
+
+            <!-- MONTO AUTOMÁTICO -->
+            <div class="monto-yape">
+              <small>MONTO EXACTO A PAGAR</small>
+              <strong id="montoYape">S/ 0.00</strong>
+            </div>
+
+            <p>
+              Selecciona tus numeritos, verifica el monto y realiza el pago.
+              Luego adjunta tu comprobante.
+            </p>
+
           </div>
 
         </div>
@@ -312,12 +422,21 @@
 
       <!-- GANADORES -->
       <section id="ganadores" class="ganadores">
+
         <h2>🏆 GANADORES</h2>
-        <p>Muy pronto conoceremos a nuestros afortunados ganadores.</p>
-        <strong>¡MUCHA SUERTE A TODOS! 🍀</strong>
+
+        <p>
+          Muy pronto conoceremos a nuestros afortunados ganadores.
+        </p>
+
+        <strong>
+          ¡MUCHA SUERTE A TODOS! 🍀
+        </strong>
+
       </section>
 
     </main>
+
 
     <footer class="footer-contenido">
       © 2026 SORTEOS JEREMY ASHTA · PARTICIPA Y GANA
@@ -325,12 +444,8 @@
 
   </section>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- JAVASCRIPT DEL SORTEO -->
+  <!-- ARCHIVO PRINCIPAL -->
   <script src="./app.js"></script>
 
 </body>
