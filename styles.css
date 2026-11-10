@@ -759,6 +759,42 @@ body {
   line-height: 1.5;
 }
 
+/* MONTO EXACTO DE YAPE */
+
+.monto-yape {
+  width: min(100%, 280px);
+  margin: 15px auto 5px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--dorado);
+  border-radius: 12px;
+  background: linear-gradient(
+    145deg,
+    rgba(0,65,25,.95),
+    rgba(0,20,8,.98)
+  );
+  box-shadow:
+    0 0 12px rgba(255,198,41,.3),
+    inset 0 0 12px rgba(255,198,41,.08);
+}
+
+.monto-yape small {
+  color: var(--dorado-claro);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.monto-yape strong {
+  color: #fff0a0;
+  font-size: 30px;
+  font-weight: 900;
+  text-shadow: 0 0 12px rgba(255,198,41,.55);
+}
+
 .ganadores {
   text-align: center;
 }
@@ -999,6 +1035,10 @@ body {
 
   .formulario-grid {
     grid-template-columns: 1fr;
+  }
+
+  .monto-yape strong {
+    font-size: 27px;
   }
 }
 
