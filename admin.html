@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#001407">
+  <title>Panel Admin · Sorteos Jeremy Ashta</title>
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+
+  <!-- ============ LOGIN ============ -->
+  <section class="login" id="vistaLogin">
+    <form class="login-caja" id="formLogin">
+      <img src="./assets/logo.png" alt="Sorteos Jeremy Ashta">
+      <h1>PANEL DE ADMINISTRADOR</h1>
+      <p id="loginInfo">Ingresa tu clave para administrar el sorteo.</p>
+      <input type="password" id="clave" placeholder="Clave de administrador" autocomplete="current-password">
+      <button type="submit" class="btn btn-dorado" id="btnLogin">INGRESAR</button>
+      <a href="./index.html" class="link-volver">← Volver a la página del sorteo</a>
+    </form>
+  </section>
+
+  <!-- ============ PANEL ============ -->
+  <section class="panel" id="vistaPanel" hidden>
+
+    <header class="cabecera">
+      <div class="marca">
+        <img src="./assets/logo.png" alt="">
+        <div>
+          <strong>SORTEOS JEREMY ASHTA</strong>
+          <small>Panel de administrador</small>
+        </div>
+      </div>
+      <div class="cabecera-acciones">
+        <span class="actualizado" id="ultimaActualizacion"></span>
+        <button class="btn btn-borde" onclick="cargarDatos()">↻ Actualizar</button>
+        <a class="btn btn-borde" href="./index.html" target="_blank">Ver página</a>
+        <button class="btn btn-borde" onclick="salir()">Salir</button>
+      </div>
+    </header>
+
+    <nav class="pestanas">
+      <button class="pestana activa" data-vista="reservas">🧾 Reservas <b id="badgePend" hidden></b></button>
+      <button class="pestana" data-vista="tablero">🎟️ Numeritos</button>
+      <button class="pestana" data-vista="manual">➕ Venta manual</button>
+      <button class="pestana" data-vista="config">⚙️ Sorteo</button>
+      <button class="pestana" data-vista="ganadores">🏆 Ganadores</button>
+    </nav>
+
+    <main class="contenido">
+
+      <!-- RESUMEN -->
+      <div class="tarjetas">
+        <div class="tarjeta t-verde"><small>Disponibles</small><strong id="kDisp">—</strong></div>
+        <div class="tarjeta t-amarillo"><small>Reservados</small><strong id="kRes">—</strong></div>
+        <div class="tarjeta t-rojo"><small>Vendidos</small><strong id="kVend">—</strong></div>
+        <div class="tarjeta t-dorado"><small>Recaudado (confirmado)</small><strong id="kMonto">—</strong></div>
+        <div class="tarjeta"><small>Por verificar</small><strong id="kPorVerificar">—</strong></div>
+      </div>
+      <div class="barra-progreso"><i id="progreso"></i></div>
+
+      <!-- RESERVAS -->
+      <section class="vista" id="vista-reservas">
+        <div class="filtros">
+          <input type="search" id="buscar" placeholder="Buscar por nombre, celular, código o número...">
+          <select id="filtroEstado">
+            <option value="PENDIENTE">Pendientes</option>
+            <option value="CONFIRMADO">Confirmadas</option>
+            <option value="VENCIDO">Vencidas</option>
+            <option value="CANCELADO">Canceladas</option>
+            <option value="">Todas</option>
+          </select>
+          <button class="btn btn-borde" onclick="exportarCSV()">⬇ Exportar CSV</button>
+        </div>
+        <div class="tabla-envoltura">
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Registrado</th>
+                <th>Participante</th>
+                <th>Números</th>
+                <th>Total</th>
+                <th>Comprobante</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReservas"></tbody>
+          </table>
+        </div>
+        <p class="vacio" id="sinReservas" hidden>No hay reservas con este filtro.</p>
+      </section>
+
+      <!-- TABLERO DE NUMERITOS -->
+      <section class="vista" id="vista-tablero" hidden>
+        <p class="ayuda">Toca un número para ver de quién es.</p>
+        <div class="leyenda">
+          <span><i class="l-disp"></i> Disponible</span>
+          <span><i class="l-res"></i> Reservado</span>
+          <span><i class="l-vend"></i> Vendido</span>
+        </div>
+        <div class="tablero" id="tablero"></div>
+        <div class="detalle-numero" id="detalleNumero" hidden></div>
+      </section>
+
+      <!-- VENTA MANUAL -->
+      <section class="vista" id="vista-manual" hidden>
+        <form class="formulario" id="formManual">
+          <p class="ayuda">Para ventas en efectivo o pagos que recibiste por otro medio. Quedan <b>confirmadas</b> de inmediato.</p>
+          <label>Nombre del participante
+            <input id="mNombre" required maxlength="80">
+          </label>
+          <label>Celular (opcional)
+            <input id="mCelular" inputmode="numeric" maxlength="9" placeholder="9XXXXXXXX">
+          </label>
+          <label>Números (separados por coma)
+            <input id="mNumeros" required placeholder="Ej: 7, 21, 150">
+          </label>
+          <label>Total cobrado (S/)
+            <input id="mTotal" type="number" min="0" step="0.5" placeholder="Se calcula solo">
+          </label>
+          <label>Nota
+            <input id="mNota" maxlength="120" placeholder="Ej: pagó en efectivo">
+          </label>
+          <button class="btn btn-dorado" type="submit" id="btnManual">REGISTRAR VENTA</button>
+        </form>
+      </section>
+
+      <!-- CONFIGURACIÓN -->
+      <section class="vista" id="vista-config" hidden>
+        <form class="formulario" id="formConfig">
+          <label>Fecha y hora del sorteo
+            <input type="datetime-local" id="cFecha">
+          </label>
+          <small class="ayuda">Déjala vacía para mostrar “Por definir”. La página muestra la cuenta regresiva.</small>
+
+          <label>Horas para verificar una reserva antes de que venza
+            <input type="number" id="cHoras" min="1" max="240">
+          </label>
+          <small class="ayuda">Si no confirmas una reserva en ese tiempo, sus números se liberan solos. Puedes reactivarla después.</small>
+
+          <label class="check">
+            <input type="checkbox" id="cAbierto"> Ventas abiertas (desmárcalo para cerrar el sorteo)
+          </label>
+
+          <button class="btn btn-dorado" type="submit" id="btnConfig">GUARDAR CAMBIOS</button>
+        </form>
+
+        <form class="formulario" id="formClave">
+          <h3>Cambiar clave de administrador</h3>
+          <label>Clave actual <input type="password" id="clActual" autocomplete="current-password"></label>
+          <label>Nueva clave <input type="password" id="clNueva" minlength="6" autocomplete="new-password"></label>
+          <button class="btn btn-borde" type="submit">Cambiar clave</button>
+        </form>
+      </section>
+
+      <!-- GANADORES -->
+      <section class="vista" id="vista-ganadores" hidden>
+        <form class="formulario" id="formGanadores">
+          <p class="ayuda">Escribe el número ganador de cada puesto. El nombre se toma de la reserva confirmada (en la página pública solo se muestra el primer apellido abreviado). Déjalos vacíos para ocultar los ganadores.</p>
+          <div id="camposGanadores"></div>
+          <button class="btn btn-dorado" type="submit" id="btnGanadores">PUBLICAR GANADORES</button>
+        </form>
+      </section>
+
+    </main>
+  </section>
+
+  <!-- CONFIGURACIÓN PENDIENTE -->
+  <section class="login" id="vistaSinServidor" hidden>
+    <div class="login-caja">
+      <img src="./assets/logo.png" alt="">
+      <h1>FALTA CONECTAR GOOGLE SHEETS</h1>
+      <p>Abre <b>config.js</b> y pega en <b>apiUrl</b> la URL de tu Apps Script (termina en <code>/exec</code>). Los pasos están en el README.</p>
+      <a href="./index.html" class="link-volver">← Volver a la página del sorteo</a>
+    </div>
+  </section>
+
+  <script src="./config.js"></script>
+  <script src="./comun.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>
