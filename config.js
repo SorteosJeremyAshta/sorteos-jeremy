@@ -4,7 +4,7 @@
 // ==========================================================
 
 const CONFIG = {
-  // https://script.google.com/macros/s/AKfycbwmGSuhEj0HBil6_YYxC-2ZHhDTN7iNe413bVjZOIzPfMOuHGcgMATJPjn4upwV3pfl9Q/exec
+  // Pega aquí la URL de tu Apps Script (termina en /exec).
   // Si la dejas vacía, la página funciona en "modo demostración":
   // no guarda reservas y solo envía el mensaje por WhatsApp.
   apiUrl: "",

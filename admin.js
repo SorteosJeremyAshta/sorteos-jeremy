@@ -324,6 +324,26 @@ document.getElementById("formClave").addEventListener("submit", async ev => {
   }
 });
 
+// ---------- REINICIAR SORTEO ----------
+document.getElementById("formReiniciar").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const txt = document.getElementById("txtReiniciar").value.trim().toUpperCase();
+  if (txt !== "REINICIAR") return aviso("Escribe REINICIAR para confirmar.", "alerta");
+  if (!confirm("¿Seguro? Todos los números quedarán disponibles y se quitarán los ganadores.\nLas reservas actuales se guardarán en una hoja Historial.")) return;
+  const btn = document.getElementById("btnReiniciar");
+  btn.disabled = true;
+  try {
+    const r = await adminPost("reiniciar", { confirmacion: txt });
+    ev.target.reset();
+    aviso(`Sorteo reiniciado ✔ (${r.archivadas} reserva(s) guardadas en Historial)`, "ok", 6);
+    await cargarDatos();
+  } catch (e) {
+    if (e.message !== "SESION_VENCIDA") aviso(e.message, "error");
+  } finally {
+    btn.disabled = false;
+  }
+});
+
 // ---------- GANADORES ----------
 function pintarGanadores() {
   const premios = datos.premios || PREMIOS_DEF;

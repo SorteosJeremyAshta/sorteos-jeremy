@@ -149,6 +149,15 @@
           <button class="btn btn-dorado" type="submit" id="btnConfig">GUARDAR CAMBIOS</button>
         </form>
 
+        <form class="formulario zona-peligro" id="formReiniciar">
+          <h3>Reiniciar sorteo (empezar de cero)</h3>
+          <p class="ayuda">Deja los 275 números disponibles y borra los ganadores publicados. Las reservas actuales no se pierden: se copian a una hoja <b>Historial</b> en tu Google Sheets.</p>
+          <label><span>Escribe <b>REINICIAR</b> para confirmar</span>
+            <input id="txtReiniciar" autocomplete="off" placeholder="REINICIAR">
+          </label>
+          <button class="btn btn-peligro" type="submit" id="btnReiniciar">REINICIAR SORTEO</button>
+        </form>
+
         <form class="formulario" id="formClave">
           <h3>Cambiar clave de administrador</h3>
           <label>Clave actual <input type="password" id="clActual" autocomplete="current-password"></label>

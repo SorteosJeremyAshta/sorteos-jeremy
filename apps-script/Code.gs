@@ -70,6 +70,7 @@ function doPost(e) {
       guardarConfig: conAdmin(guardarConfig),
       guardarGanadores: conAdmin(guardarGanadores),
       cambiarClave: conAdmin(cambiarClave),
+      reiniciar: conAdmin(reiniciarSorteo),
       logout: conAdmin(logout)
     };
     const fn = acciones[datos.accion];
@@ -326,6 +327,37 @@ function cambiarClave(d) {
   if (hashTexto(String(d.actual || "")) !== props.getProperty("ADMIN_CLAVE")) throw new Error("La clave actual no es correcta.");
   props.setProperty("ADMIN_CLAVE", hashTexto(nueva));
   return { ok: true };
+}
+
+/**
+ * Deja TODOS los números disponibles para empezar de cero.
+ * No borra nada: copia las reservas a una hoja "Historial AAAA-MM-DD HH:MM"
+ * y luego vacía la hoja Reservas y los ganadores.
+ */
+function reiniciarSorteo(d) {
+  if (String(d.confirmacion || "").toUpperCase() !== "REINICIAR") {
+    throw new Error("Escribe REINICIAR para confirmar.");
+  }
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sh = hoja(HOJA_RESERVAS);
+    const n = sh.getLastRow() - 1;
+    let archivadas = 0;
+    if (n > 0) {
+      const datos = sh.getRange(1, 1, n + 1, COLUMNAS.length).getValues();
+      const nombre = "Historial " + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
+      const hist = ss.insertSheet(nombre);
+      hist.getRange(1, 1, datos.length, COLUMNAS.length).setValues(datos);
+      sh.deleteRows(2, n);
+      archivadas = n;
+    }
+    escribirConfig("ganadores", "[]");
+    return { ok: true, archivadas: archivadas };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 // ==========================================================

@@ -415,6 +415,25 @@ input[type="datetime-local"] { color-scheme: dark; }
 .puesto { color: var(--dorado); font-weight: 900; }
 .dueno { color: var(--texto-suave); font-size: 11px; }
 
+.zona-peligro {
+  padding: 16px;
+  border: 1px solid rgba(255,107,107,.5) !important;
+  border-radius: 12px;
+  background: rgba(90,11,11,.25);
+}
+
+.zona-peligro h3 { color: #ff8a8a !important; }
+
+.btn-peligro {
+  align-self: flex-start;
+  padding: 12px 20px;
+  color: #fff;
+  border: 1px solid #ff8a8a;
+  background: #8a0e0e;
+}
+
+.btn-peligro:hover:not(:disabled) { background: #a51212; }
+
 /* ---------- AVISOS ---------- */
 
 #avisos {
