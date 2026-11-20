@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,63 +9,6 @@
 
   <link rel="stylesheet" href="./styles.css">
 
-  <!-- Distribución de las tarjetas de portada -->
-  <style>
-    .estadisticas {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 180px));
-      gap: 12px;
-      justify-content: center;
-      width: 100%;
-      max-width: 380px;
-      margin: 28px auto;
-    }
-
-    .estadistica {
-      min-height: 95px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 5px;
-    }
-
-    .estadistica-promocion {
-      border: 1px solid #ffc400;
-      background: rgba(255, 193, 7, 0.12);
-    }
-
-    .estadistica-promocion strong,
-    .estadistica-promocion small {
-      color: #ffc400;
-    }
-
-    /* MONTO EXACTO DE YAPE */
-    .monto-yape {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      margin: 15px auto;
-      padding: 12px;
-      border: 1px solid #ffc400;
-      border-radius: 12px;
-      background: rgba(255, 193, 7, 0.10);
-    }
-
-    .monto-yape small {
-      color: #ffc400;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .monto-yape strong {
-      color: #ffc400;
-      font-size: 28px;
-      font-weight: 900;
-    }
-  </style>
 </head>
 
 <body>
@@ -180,10 +122,10 @@
         id="whatsappContacto"
         href="#"
         target="_blank"
-        aria-label="WhatsApp"
-      >
-        ☎
-      </a>
+        rel="noopener"
+        aria-label="Escríbenos por WhatsApp"
+        title="Escríbenos por WhatsApp"
+      ></a>
 
       <nav class="menu" id="menu">
         <a href="#premios" onclick="cerrarMenu()">Premios</a>
@@ -291,6 +233,11 @@
           </span>
         </div>
 
+        <p class="conteo-numeros" id="conteoNumeros">Cargando numeritos...</p>
+        <div class="aviso-cerrado" id="avisoCerrado" hidden>
+          🔒 Las ventas para este sorteo están cerradas.
+        </div>
+
         <!-- CUADRÍCULA DE NÚMEROS -->
         <div class="cuadricula" id="cuadricula"></div>
 
@@ -318,7 +265,17 @@
       </section>
 
 
-      <!-- FECHA Y PRECIO -->
+      <!-- FECHA, CUENTA REGRESIVA Y PRECIO -->
+      <div class="cuenta-regresiva" id="cuentaRegresiva" hidden>
+        <small id="cuentaTitulo">FALTAN PARA EL SORTEO</small>
+        <div class="cuenta-cajas">
+          <div><strong id="cdDias">00</strong><span>Días</span></div>
+          <div><strong id="cdHoras">00</strong><span>Horas</span></div>
+          <div><strong id="cdMin">00</strong><span>Min</span></div>
+          <div><strong id="cdSeg">00</strong><span>Seg</span></div>
+        </div>
+      </div>
+
       <div class="datos-sorteo">
 
         <div class="dato">
@@ -337,7 +294,7 @@
 
           <div>
             <small>Precio por número:</small>
-            <strong>S/. 5.00</strong>
+            <strong>S/. 5.00 · 3 x S/ 10</strong>
           </div>
         </div>
 
@@ -350,7 +307,8 @@
         <h2>📲 CONFIRMA TU PARTICIPACIÓN</h2>
 
         <p>
-          Completa tus datos, verifica el monto exacto y adjunta tu comprobante de Yape.
+          1) Elige tus numeritos · 2) Yapea el monto exacto · 3) Completa tus datos y adjunta la captura del Yape.
+          Tus números quedan <b>reservados</b> hasta que verifiquemos el pago.
         </p>
 
         <div class="formulario-grid">
@@ -374,17 +332,24 @@
               placeholder="Tu celular de 9 dígitos"
             >
 
-            <label for="comprobante">Comprobante de pago</label>
+            <label for="comprobante">Captura del Yape (comprobante)</label>
 
             <input
               id="comprobante"
               type="file"
               accept="image/*"
             >
+            <img id="vistaComprobante" class="vista-comprobante" alt="Vista previa del comprobante" hidden>
+
+            <div class="mini-resumen">
+              <span>Números: <b id="formNumeros">Ninguno</b></span>
+              <span>Total: <b id="formTotal">S/ 0.00</b></span>
+            </div>
 
             <button
               class="boton-dorado boton-enviar"
-              onclick="enviarWhatsApp()"
+              id="botonEnviar"
+              onclick="enviarParticipacion()"
             >
               ENVIAR MI PARTICIPACIÓN
             </button>
@@ -417,6 +382,19 @@
 
         </div>
 
+        <!-- RESERVA REGISTRADA -->
+        <div class="reserva-ok" id="reservaOk" hidden>
+          <span>✅</span>
+          <h3>¡RESERVA REGISTRADA!</h3>
+          <p>Código: <b id="okCodigo"></b></p>
+          <p>Números: <b id="okNumeros"></b> · Total: <b id="okTotal"></b></p>
+          <p id="okVence"></p>
+          <a class="boton-dorado boton-whatsapp-ok" id="okWhatsapp" href="#" target="_blank" rel="noopener">
+            AVISAR POR WHATSAPP
+          </a>
+          <button class="boton-secundario" onclick="nuevaCompra()">Comprar más numeritos</button>
+        </div>
+
       </section>
 
 
@@ -425,13 +403,17 @@
 
         <h2>🏆 GANADORES</h2>
 
-        <p>
-          Muy pronto conoceremos a nuestros afortunados ganadores.
-        </p>
+        <div id="ganadoresLista" class="ganadores-lista" hidden></div>
 
-        <strong>
-          ¡MUCHA SUERTE A TODOS! 🍀
-        </strong>
+        <div id="ganadoresVacio">
+          <p>
+            Muy pronto conoceremos a nuestros afortunados ganadores.
+          </p>
+
+          <strong>
+            ¡MUCHA SUERTE A TODOS! 🍀
+          </strong>
+        </div>
 
       </section>
 
@@ -445,7 +427,9 @@
   </section>
 
 
-  <!-- ARCHIVO PRINCIPAL -->
+  <!-- ARCHIVOS JS (el orden importa) -->
+  <script src="./config.js"></script>
+  <script src="./comun.js"></script>
   <script src="./app.js"></script>
 
 </body>
